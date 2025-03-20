@@ -34,6 +34,55 @@ export class DynamicOptionsController {
         return this.DynamicOptionsService.getDocterOptions(query);
     }
 
+    @ApiOperation({
+        summary: '获取病房选项列表',
+    })
+    // @RequirePermission('emr:DynamicOptions:add')//权限标识
+    @Get('roomOptionlist')
+    getRoomOptions(@Query() query: SelectDoctorDto) {
+        console.log('========findRoomOptions========');
+        return this.DynamicOptionsService.getDocterOptions(query);
+    }
+
+    @ApiOperation({
+        summary: '获取性别选项列表',
+    })
+    // @RequirePermission('emr:DynamicOptions:add')//权限标识
+    @Get('genderOptionlist')
+    getGenderCodeOptions() {
+        console.log('========findDeptOptions========');
+        return this.DynamicOptionsService.getDeptOptions();
+    }
+
+    @ApiOperation({
+        summary: '获取国内地址-state省选项列表',
+    })
+    // @RequirePermission('emr:DynamicOptions:add')//权限标识
+    @Get('statesOptionlist')
+    getStateOptions(@Query() query: SelectDoctorDto) {
+        console.log('========findEmpOptions========');
+        return this.DynamicOptionsService.getDocterOptions(query);
+    }
+
+    @ApiOperation({
+        summary: '获取国内地址-city市选项列表',
+    })
+    // @RequirePermission('emr:DynamicOptions:add')//权限标识
+    @Get('citiesOptionlist')
+    getCityOptions(@Query() query: SelectDoctorDto) {
+        console.log('========findEmpOptions========');
+        return this.DynamicOptionsService.getDocterOptions(query);
+    }
+
+    @ApiOperation({
+        summary: '获取国内地址-area县选项列表',
+    })
+    // @RequirePermission('emr:DynamicOptions:add')//权限标识
+    @Get('areasOptionlist')
+    getAreaOptions(@Query() query: SelectDoctorDto) {
+        console.log('========findEmpOptions========');
+        return this.DynamicOptionsService.getDocterOptions(query);
+    }
 
     // 试试看后端返回模板所需字段，前端动态生成formJson
     @ApiOperation({

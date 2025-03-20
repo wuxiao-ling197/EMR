@@ -94,6 +94,14 @@ export class DynamicOptionsService {
         return ResultData.ok(list);
     }
 
+    // 获取性别编码选项列表
+    async getGenderCodeOptions() {
+        let list: Array<DynamicOptionsDto> = []
+        // 从numberCode里面获取性别代码
+        // code=TP2202
+        return ResultData.ok(list);
+    }
+
     // 动态生成模板所需字段组件json
     async generateTemplate(query: GenerateTemplateFieldsDto) {
         let byCategory = query.categoryCode ? true : false;
@@ -255,76 +263,187 @@ export class DynamicOptionsService {
         console.log(columns);
         // 理想状态下columns里面包含字段的各种信息[{label,comment,code,parent,fieldType,nullable}]
         // 不用查询，直接遍历
+        let widgetListPromises = []
         let widgetJsonList = []
         if (columns.length > 0) {
-            columns.forEach(column => {
-                let widgetJson: WidgetJsonDto;
-                let code = column.code;
-                let codeName = column.label;
-                widgetJson = {
-                    "type": "input",
-                    "name": code,
-                    "label": codeName,
-                    "id": code,
-                    "optionItems": []
-                };
-                console.log('options-------------');
+            widgetListPromises = columns.map(column => {
+                return new Promise(async (resolve) => {
+                    // columns.forEach(column => {
+                    let widgetJson: WidgetJsonDto;
+                    let code = column.code;
+                    let codeName = column.label;
+                    widgetJson = {
+                        "type": "input",
+                        "name": code,
+                        "label": codeName,
+                        "id": code,
+                        "optionItems": []
+                    };
+                    console.log('options-------------');
 
-                switch (column.fieldType) {
-                    case 'int':
-                    case 'int4':
-                        widgetJson.type = "number";
-                        break;
-                    case 'varchar':
-                    case 'char':
-                        widgetJson.type = "input";
-                        break;
-                    case 'jsonb':
-                        widgetJson.type = "input";
-                        break;
-                    case 'timestamp':
-                        widgetJson.type = "date";
-                        widgetJson.options = {
-                            showType: 'datetime',
-                            format: 'YYYY-MM-DD HH:mm:ss',
-                            valueFormat: 'YYYY-MM-DD HH:mm:ss'
+                    switch (column.fieldType) {
+                        case 'int':
+                        case 'int4':
+                            widgetJson.type = "number";
+                            break;
+                        case 'varchar':
+                        case 'char':
+                            widgetJson.type = "input";
+                            break;
+                        case 'jsonb':
+                            widgetJson.type = "input";
+                            break;
+                        case 'timestamp':
+                            widgetJson.type = "date";
+                            widgetJson.options = {
+                                showType: 'datetime',
+                                format: 'YYYY-MM-DD HH:mm:ss',
+                                valueFormat: 'YYYY-MM-DD HH:mm:ss'
+                            }
+                            break;
+                        case 'date':
+                            widgetJson.type = "date";
+                            widgetJson.options = {
+                                type: 'datetime',
+                                format: 'YYYY-MM-DD HH:mm:ss',
+                                valueFormat: 'YYYY-MM-DD HH:mm:ss'
+                            }
+                            break;
+                        case 'bool':
+                            widgetJson.type = "radio";
+                            widgetJson.optionItems = [{
+                                "label": "是",
+                                "value": true
+                            },
+                            {
+                                "label": "否",
+                                "value": false
+                            }];
+                            break;
+                        case 'text':
+                            widgetJson.type = "input";
+                            break;
+                        case 'float8':
+                        case 'float':
+                            widgetJson.type = "input";
+                            break;
+                        case 'bytea':
+                            widgetJson.type = "input";
+                            break;
+                        default:
+                            return;
+                    }
+                    // 如果name包含性别、省、市、县就从编码表获取options
+                    // 如果是科室、部门、医生、病房等，调用dynamicOptions里的方法获取选项
+                    if (code === 'gender') {
+                        let options = await this.getOptions('TP2202');
+                        console.log('options-------------');
+                        // console.log(options);
+                        if (options.length > 0) {
+                            console.log('111111111');
+                            widgetJson.type = "radio";
+                            widgetJson.optionItems = options;
                         }
-                        break;
-                    case 'date':
-                        widgetJson.type = "date";
-                        widgetJson.options = {
-                            type: 'datetime',
-                            format: 'YYYY-MM-DD HH:mm:ss',
-                            valueFormat: 'YYYY-MM-DD HH:mm:ss'
+                    } else if (code === 'marray') {
+                        // 婚姻状况代码
+                        let options = await this.getOptions('TP2201');
+                        console.log('options-------------');
+                        // console.log(options);
+                        if (options.length > 0) {
+                            console.log('111111111');
+                            widgetJson.type = "radio";
+                            widgetJson.optionItems = options;
                         }
-                        break;
-                    case 'bool':
-                        widgetJson.type = "radio";
-                        widgetJson.optionItems = [{
-                            "label": "是",
-                            "value": true
-                        },
-                        {
-                            "label": "否",
-                            "value": false
-                        }];
-                        break;
-                    case 'text':
-                        widgetJson.type = "input";
-                        break;
-                    case 'float8':
-                    case 'float':
-                        widgetJson.type = "input";
-                        break;
-                    case 'bytea':
-                        widgetJson.type = "input";
-                        break;
-                    default:
-                        return;
-                }
-                console.log(widgetJson);
-                widgetJsonList.push(widgetJson)
+                    } else if (code === 'career') {
+                        // 职业类别代码
+                        let options = await this.getOptions('TP2301');
+                        console.log('options-------------');
+                        // console.log(options);
+                        if (options.length > 0) {
+                            console.log('111111111');
+                            widgetJson.type = "radio";
+                            widgetJson.optionItems = options;
+                        }
+                    } else if (code === 'workSubjection') {
+                        // 单位隶属关系
+                        let options = await this.getOptions('TP1801');
+                        console.log('options-------------');
+                        // console.log(options);
+                        if (options.length > 0) {
+                            console.log('111111111');
+                            widgetJson.type = "radio";
+                            widgetJson.optionItems = options;
+                        }
+                    } else if (code === 'averageIncome') {
+                        // 家庭年均人收入
+                        let options = await this.getOptions('TP0108');
+                        console.log('options-------------');
+                        // console.log(options);
+                        if (options.length > 0) {
+                            console.log('111111111');
+                            widgetJson.type = "radio";
+                            widgetJson.optionItems = options;
+                        }
+                    } else if (code === 'insurance') {
+                        // 医疗保险类别代码
+                        let options = await this.getOptions('CV02.01.204');
+                        console.log('options-------------');
+                        // console.log(options);
+                        if (options.length > 0) {
+                            console.log('111111111');
+                            widgetJson.type = "radio";
+                            widgetJson.optionItems = options;
+                        }
+                    }
+                    // if (code.match(/contryId/)) {
+                    //     // 和‘省’有关（自治区直辖市），code包含stateID（大小写不定）
+                    //     let options = await this.getOptions('TP2202');
+                    //     console.log('options-------------');
+                    //     // console.log(options);
+                    //     if (options.length > 0) {
+                    //         console.log('111111111');
+                    //         widgetJson.type = "select";
+                    //         widgetJson.optionItems = options;
+                    //     }
+                    // }
+                    // else if (code.match(/stateId/)) {
+                    //     // 和‘省’有关（自治区直辖市），code包含stateID（大小写不定）
+                    //     let options = await this.getOptions('TP2202');
+                    //     console.log('options-------------');
+                    //     // console.log(options);
+                    //     if (options.length > 0) {
+                    //         console.log('111111111');
+                    //         widgetJson.type = "radio";
+                    //         widgetJson.optionItems = options;
+                    //     }
+                    // } else if (code.match()) {
+                    //     // 市（地区，州），包含cityID（大小写不限）
+                    //     let options = await this.getOptions('TP2202');
+                    //     console.log('options-------------');
+                    //     // console.log(options);
+                    //     if (options.length > 0) {
+                    //         console.log('111111111');
+                    //         widgetJson.type = "radio";
+                    //         widgetJson.optionItems = options;
+                    //     }
+                    // } else if (code.match()) {
+                    //     // 县（区），包含areaID（大小写不限）
+                    //     let options = await this.getOptions('TP2202');
+                    //     console.log('options-------------');
+                    //     // console.log(options);
+                    //     if (options.length > 0) {
+                    //         console.log('111111111');
+                    //         widgetJson.type = "radio";
+                    //         widgetJson.optionItems = options;
+                    //     }
+                    // }
+                    console.log(widgetJson);
+                    widgetJsonList.push(widgetJson)
+                    resolve(widgetJson); // 解析 Promise
+                });
             });
+            // 等待所有 Promise 完成，并收集结果
+            let widgetList = await Promise.all(widgetListPromises);
         }
         return widgetJsonList
     }

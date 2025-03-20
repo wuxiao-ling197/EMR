@@ -64,7 +64,7 @@
             </template>
             <el-table 
             ref="tableRef"
-            row-key="date"
+            :row-key="id"
             :data="infoList" 
             height="450"
             style="width: 100%"

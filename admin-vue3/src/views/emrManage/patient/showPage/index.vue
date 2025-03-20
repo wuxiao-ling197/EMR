@@ -193,6 +193,7 @@
     import { useRoute, useRouter } from 'vue-router';
     import { ElMessageBox,ElMessage } from 'element-plus';
     import usePatientStore from '@/store/modules/patient';
+    import useUserStore from '@/store/modules/user'
     import { getPatientListApi,getRoomCallListApi } from '@/api/medicalRecord/emrApi';
 
     import MyDialog from '@/components/MyDialog/index.vue';
@@ -210,7 +211,17 @@
     const patientInfoCong = {
         title: '基础信息'
     };
-    const roomNumber = 3
+    // 如果是医生登录，userInfo里应该会有当前诊室信息，先固定为28
+    const roomNumber = 28
+    let currentUser = {}
+    try{
+        currentUser = JSON.parse(useUserStore().currentUser)
+        roomNumber = currentUser.roomNumber || 28
+    }catch(err){
+        console.error(err);
+        
+    }
+    
 
     let currentPatient = patientStore.currentPatient
     // 等待叫号
@@ -225,8 +236,8 @@
     let message = ref('当前没有排队的患者')
     // 一进来的时候就一个查询号病人列表数据，遍历tablist，将data放进去
     const tabList = [
-        {label: '在院', name: 'inhospital', key: 'inhospital', content: '在院', data:[], type:'0'},
-        {label: '出院', name:'outhospital',key:'outhospital',content:'出院', data:[], type:'1'},
+        // {label: '在院', name: 'inhospital', key: 'inhospital', content: '在院', data:[], type:'0'},
+        // {label: '出院', name:'outhospital',key:'outhospital',content:'出院', data:[], type:'1'},
         {label: '我的', name:'mine',key:'mine',content:'我的', data:[], type:'2'},
         {label: '科室', name:'department',key:'department',content:'科室', data:[], type:'3'}
     ]
@@ -262,6 +273,8 @@
     }
 
     onMounted(async()=>{
+        console.log(currentUser);
+        
         await getPatientEvt();
         console.log(patientList.value);
         // 分块

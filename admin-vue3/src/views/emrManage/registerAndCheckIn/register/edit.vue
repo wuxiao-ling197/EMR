@@ -143,7 +143,7 @@
     // 获取用户信息表单模板
     async function getPatientInfoMudule(){
         // 根据id或者name获取
-        const res2 = await selectTemplateApi({name:'档案基础信息表3'})
+        const res2 = await selectTemplateApi({name:'用户档案信息'})
         if(res2.code===200 ){
             console.log(res2.data);
             formJson.value = res2.data.payload.template
@@ -155,7 +155,7 @@
      // 获取用户信息表单模板
      async function getRegisterMudule(){
         // 根据id或者name获取
-        const res = await selectTemplateApi({name:'挂号信息模板3'})
+        const res = await selectTemplateApi({name:'挂号信息模板'})
         if(res.code===200){
             console.log(res.data);
             regisFormJson.value = res.data.payload.template

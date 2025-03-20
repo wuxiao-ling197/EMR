@@ -376,14 +376,16 @@ export class RegisCheckService {
                 status: 1,
                 // status (payload状态，发布状态:1/草稿状态:2) 
             }
+            // 这个应该是操作签到的人的id和name以及place
             let participants = {
-                role_id: 'writeID',
+                role_id: regis.writeUID,
                 role_name: '角色，',
-                place: '地点，',
+                place: '窗口',
                 desc: '签到',
-                checkInTime: '时间，',
-                priority: '序列'
+                checkInTime: new Date(),
+                priority: ''//序列
             }
+            // {"place": "线上", "role_id": "HPID2503190000002", "priority": "", "role_name": "赵国良", "checkInTime": "2025-03-19 10:01:40"}
             let ares = await this.addPayload({ jobId, payload, header, participants })
             // 挂号记录添加入排队表
             let qres = await this.addInQueue(regis)
@@ -470,9 +472,9 @@ export class RegisCheckService {
      * @returns 
      */
     async addInQueue(regis: CreateRegisterDto) {
-        console.log('------421');
+        console.log('------addInQueue');
 
-        // console.log(regis);
+        console.log(regis);
         // 查询当前诊室的queue长度
         let qNumber = 0
         try {
