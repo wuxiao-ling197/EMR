@@ -11,14 +11,6 @@
         <el-button @click="reLocation">返回</el-button>
       </el-col>
       <el-col :span="6" v-if="!isRender && !isMD">
-        <!-- <el-input
-          v-model="fieldCategory"
-          class="icon-search"
-          clearable
-          placeholder="请输入数据源名称"
-          @input="searchDataSourceCategory"
-          @change="searchDataSourceCategory"
-          ></el-input> -->
         <el-select clearable v-model="fieldCategory" placeholder="可多选">
           <el-option
             v-for="item in categoryList"
@@ -27,6 +19,8 @@
             :value="item"
           />
         </el-select>
+      </el-col>
+      <el-col :span="3" v-if="!isRender && !isMD">
         <el-button @click="resetDataSource(1)">category数据源</el-button>
       </el-col>
       <el-col :span="6" v-if="!isRender && !isMD">
@@ -38,6 +32,8 @@
             :value="item"
           />
         </el-select>
+      </el-col>
+      <el-col :span="3" v-if="!isRender && !isMD">
         <el-button @click="resetDataSource(2)">entity数据源</el-button>
       </el-col>
     </el-row>
@@ -324,8 +320,6 @@ export default {
     // 获取卫生信息数据源类别（模板大类）
     async function getCategory() {
       const res = await getHospitalMetadataCategoryApi();
-      // console.log(res.data);
-
       if (res.code === 200) {
         res.data.list.forEach((item) => {
           categoryList.value.push(item.category);
@@ -341,14 +335,9 @@ export default {
       // console.log(res);
       if (res.code === 200) {
         res.data.list.forEach((item) => {
-          // 将所有实体的元数据添加到一个fieldList中，即所有的数据源
-          // 最好将每一个item的fields[]都解构再合并成一个数组（或者concat），但不同的实体可能有重名的字段，（比如每个实体都有id）需要处理解决）
           entitiesFieldList.value.push(item.comment);
-          // entitiesFieldList.value.push(item.tableName)
         });
       }
-      // console.log('数据库的实体的数据原值域-------');
-      // console.log(entitiesFieldList.value);
     }
     return {
       mdFormData,
@@ -415,15 +404,6 @@ export default {
   },
 
   async mounted() {
-    // if(!medicalRecordStore.currentModule){
-    //   // 如果不存在当前模板，直接重定向到基础模板页
-    //   router.push({
-    //       path: "/emrManage/template/templateConfig",
-    //   });
-    // }
-    // console.log(this.templateObj);
-
-    // await this.getDynamicOptions()
     // 获取实体的元数据
     await this.getFieldOfEntity();
     // 获取医院的数据源值域和大类
@@ -436,27 +416,33 @@ export default {
       this.locationIndex();
     }
 
-    // 拿到选中字段
-    // fieldsStore.getSelectedFields()
-    console.log(this.selectedFields);
-    // 发送请求
-    this.generateTemplate(this.selectedFields);
   },
   methods: {
     // 尝试动态生成表单widget，根据key生成
     async generateTemplate(templateKey) {
+      console.log(templateKey);
+      // return 
+      let isEntityColumns = true;
+      let isCodeList = false;
       // 初始化一下
       // this.formJson.widgetList = []
       if (typeof templateKey === "string") {
         this.formJson.widgetList = await generateTemplateJson({
           categoryCode: templateKey,
         });
-      } else if (Array.isArray(templateKey)) {
+      } else if (isCodeList && Array.isArray(templateKey)) {
         this.formJson.widgetList = await generateTemplateJson({
-          feildList: templateKey,
+          fieldList: templateKey,
         });
+      } else if(isEntityColumns){
+        this.formJson.widgetList = await generateTemplateJson({
+          entityColumns: templateKey,
+        });
+        console.log(this.formJson.widgetList);
+        
       }
-
+      console.log(this.formJson);
+      
       this.$refs.vfDesignerRef.setFormJson(this.formJson);
     },
     // 锚点定位方法
@@ -620,8 +606,17 @@ export default {
           nextTick(() => {
             // 如果是form编辑器，新增模式先清空画板
             this.$refs.vfDesignerRef.clearDesigner();
-            // 动态生成模板
-            this.generateTemplate(this.templateKey);
+            
+            // 拿到选中字段
+            // fieldsStore.getSelectedFields()
+            console.log(this.selectedFields);
+            if(this.selectedFields.length>0){
+              // 发送请求
+              this.generateTemplate(this.selectedFields);
+            }else{
+              // 动态生成模板
+              this.generateTemplate(this.templateKey);
+            }
           });
         }
       } else if (id === "edit") {

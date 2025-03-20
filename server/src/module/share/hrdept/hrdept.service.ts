@@ -11,9 +11,9 @@ import { ResCompEntity } from '../resuser/entities/rescompany.entity';
 @Injectable()
 export class HrDeptService {
   constructor(
-    @InjectRepository(HrDeptEntity, 'odoo18-2')
+    @InjectRepository(HrDeptEntity, 'odoo18')
     private readonly hrDeptEntityRep: Repository<HrDeptEntity>,
-    @InjectRepository(ResCompEntity, 'odoo18-2')
+    @InjectRepository(ResCompEntity, 'odoo18')
     private readonly companyEntityRep: Repository<ResCompEntity>,
   ) { }
 

@@ -77,7 +77,7 @@
             </div> -->
             <el-table 
             ref="tableRef"
-            row-key="date"
+            :row-key="id"
             :data="infoList" 
             height="450"
             style="width: 100%"
@@ -445,6 +445,11 @@ import { ElMessageBox } from "element-plus";
         console.log(row);
         currentPatientInfo.value = selection[0]
 
+    }
+    // 表单点击事件
+    const rowClickEvt = (row)=>{
+        console.log(row);
+        currentPatientInfo.value = row
     }
     const patientStore = usePatientStore()
     const router = useRouter()

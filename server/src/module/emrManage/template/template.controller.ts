@@ -50,4 +50,19 @@ export class TemplateController {
       console.log(err);
     }
   }
+
+  @ApiOperation({
+    summary: '校验模板名',
+  })
+  // @RequirePermission('emr:Patient:add')//权限标识
+  @Post('checkOutTemplateName')
+  checkOutTemplateName(@Body() checkOutDto: any) {
+    console.log('========checkOutTemplateName========');
+    try {
+      return this.TemplateService.checkOutTemplate(checkOutDto);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
 }

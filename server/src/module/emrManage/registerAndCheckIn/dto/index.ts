@@ -70,7 +70,7 @@ export class CreatePatientDto {
 
     identityType?: string
 
-    inpatient_flag: boolean
+    // inpatient_flag: boolean
 
     insurance?: number
 

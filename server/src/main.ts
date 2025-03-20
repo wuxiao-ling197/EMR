@@ -50,7 +50,8 @@ async function bootstrap() {
 
   //服务端口
   const port = config.get<number>('app.port') || 8080;
-  await app.listen(port);
+  // await app.listen(port);
+  await app.listen(port, '0.0.0.0'); // 明确指定监听所有接口，因为remote-ssh连接远程主机后可能修改了本地网络接口优先级，导致代理无法访问
 
   console.log(`Nest-Admin 服务启动成功 `, '\n', '\n', '服务地址', `http://localhost:${port}${prefix}/`, '\n', 'swagger 文档地址        ', `http://localhost:${port}${prefix}/swagger-ui/`);
 }

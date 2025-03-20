@@ -10,9 +10,9 @@ import { MetadataEntity } from '../emrManage/metadata/entities/emr-metadata.enti
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([HrEmpEntity, ResUserEntity, HrDeptEntity, CompUserEntity ], 'shared'), // Ensure the entity is registered here
+    TypeOrmModule.forFeature([HrEmpEntity, ResUserEntity, HrDeptEntity, CompUserEntity], 'odoo18'), // Ensure the entity is registered here
   ],
   controllers: [MainController],
   providers: [MainService],
 })
-export class MainModule {}
+export class MainModule { }

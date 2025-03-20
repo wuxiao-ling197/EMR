@@ -40,8 +40,8 @@ export class DynamicOptionsController {
         summary: '动态生成病历模板所需字段',
     })
     // @RequirePermission('emr:DynamicOptions:add')//权限标识
-    @Get('generateTemplate')
-    generateTemplate(@Query() query: any) {
+    @Post('generateTemplate')
+    generateTemplate(@Body() query: any) {
         console.log('========generateTemplate========');
         console.log(query);
         return this.DynamicOptionsService.generateTemplate(query);
@@ -52,10 +52,22 @@ export class DynamicOptionsController {
         summary: '获取模板配置可用的所有字段',
     })
     // @RequirePermission('emr:DynamicOptions:add')//权限标识
-    @Get('getTemplateFeildList')
-    getAllFeildList(@Query() query: any) {
+    @Post('getTemplateFeildList')
+    getAllFeildList(@Body() query: any) {
         console.log('========getTemplateFeildList========');
         console.log(query);
         return this.DynamicOptionsService.getAllFeild(query);
+    }
+
+    // 获取模板配置页面的可选择字段
+    @ApiOperation({
+        summary: '获取模板配置可用的所有字段',
+    })
+    // @RequirePermission('emr:DynamicOptions:add')//权限标识
+    @Post('getFieldsByStanderdCode')
+    findFieldsByStanderdCode(@Body() data: any) {
+        console.log('========getFieldsByStanderdCode========');
+        console.log(data);
+        return this.DynamicOptionsService.getFieldsByStanderdCode(data);
     }
 }

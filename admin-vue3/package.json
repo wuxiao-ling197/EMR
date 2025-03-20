@@ -30,6 +30,7 @@
     "katex": "^0.16.21",
     "mockjs": "^1.1.0",
     "nprogress": "0.2.0",
+    "openai": "^4.87.3",
     "pinia": "2.0.22",
     "pinia-plugin-persist": "^1.0.0",
     "qrcode": "^1.5.4",

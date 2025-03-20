@@ -16,7 +16,7 @@ import { MedicalRecordWithRoleEntity } from './entities/medical-record-width-rol
 @Module({
   imports: [
     // TypeOrmModule.forFeature([MedicalRecordEntity, SysDeptEntity, SysRoleEntity, SysPostEntity, SysMedicalRecordWithPostEntity, SysMedicalRecordWithRoleEntity]),
-    TypeOrmModule.forFeature([MedicalRecordEntity, MedicalRecordWithPostEntity, MedicalRecordWithRoleEntity], 'odoo18-2'),
+    TypeOrmModule.forFeature([MedicalRecordEntity, MedicalRecordWithPostEntity, MedicalRecordWithRoleEntity], 'odoo18'),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({

@@ -417,15 +417,15 @@ export const vFormWidgets = {
     "id": "timerange45477"
   },
   dateWidget: {
-    "key": 108662,
+    "key": 67485,
     "type": "date",
     "icon": "date-field",
     "formItemFlag": true,
     "options": {
-      "name": "date94302",
+      "name": "date106370",
       "label": "date",
       "labelAlign": "",
-      "type": "date",
+      "type": "datetime",
       "defaultValue": null,
       "placeholder": "",
       "columnWidth": "200px",
@@ -438,8 +438,8 @@ export const vFormWidgets = {
       "hidden": false,
       "clearable": true,
       "editable": false,
-      "format": "YYYY-MM-DD",
-      "valueFormat": "YYYY-MM-DD",
+      "format": "YYYY-MM-DD HH:mm:ss",
+      "valueFormat": "YYYY-MM-DD HH:mm:ss",
       "required": false,
       "requiredHint": "",
       "validation": "",
@@ -455,7 +455,7 @@ export const vFormWidgets = {
       "onBlur": "",
       "onValidate": ""
     },
-    "id": "date94302"
+    "id": "date106370"
   },
   dateRangeWidget: {
     "key": 6908,
@@ -498,5 +498,273 @@ export const vFormWidgets = {
       "onValidate": ""
     },
     "id": "daterange80438"
+  },
+  // 练级选择
+  cascader: {
+    "key": 54673,
+    "type": "cascader",
+    "icon": "cascader-field",
+    "formItemFlag": true,
+    "options": {
+      "name": "cascader26612",
+      "label": "cascader",
+      "labelAlign": "",
+      "defaultValue": "",
+      "placeholder": "",
+      "size": "",
+      "labelWidth": null,
+      "labelHidden": false,
+      "columnWidth": "200px",
+      "disabled": false,
+      "hidden": false,
+      "clearable": true,
+      "filterable": false,
+      "multiple": false,
+      "checkStrictly": false,
+      "showAllLevels": true,
+      "optionItems": [
+        {
+          "label": "select 1",
+          "value": 1,
+          "children": [
+            {
+              "label": "child 1",
+              "value": 11
+            }
+          ]
+        },
+        {
+          "label": "select 2",
+          "value": 2
+        },
+        {
+          "label": "select 3",
+          "value": 3
+        }
+      ],
+      "required": false,
+      "requiredHint": "",
+      "customRule": "",
+      "customRuleHint": "",
+      "customClass": "",
+      "labelIconClass": null,
+      "labelIconPosition": "rear",
+      "labelTooltip": null,
+      "onCreated": "",
+      "onMounted": "",
+      "onChange": "",
+      "onFocus": "",
+      "onBlur": "",
+      "onValidate": ""
+    },
+    "id": "cascader26612"
+  }
+
+}
+
+/** 定义vform编辑器容器组件配置 */
+export const vFormContainer = {
+  gridContainer: {
+    "key": 61387,
+    "type": "grid",
+    "category": "container",
+    "icon": "grid",
+    "cols": [],
+    "options": {
+      "name": "grid48857",
+      "hidden": false,
+      "gutter": 12,
+      "colHeight": null,
+      "customClass": ""
+    },
+    "id": "grid48857"
+  },
+  tableContainer: {
+    "key": 49163,
+    "type": "table",
+    "category": "container",
+    "icon": "table",
+    "rows": [
+      {
+        "cols": [
+          {
+            "type": "table-cell",
+            "category": "container",
+            "icon": "table-cell",
+            "internal": true,
+            "widgetList": [],
+            "merged": false,
+            "options": {
+              "name": "table-cell-102049",
+              "cellWidth": "",
+              "cellHeight": "",
+              "colspan": 1,
+              "rowspan": 1,
+              "wordBreak": false,
+              "customClass": ""
+            },
+            "id": "table-cell-102049"
+          },
+          {
+            "type": "table-cell",
+            "category": "container",
+            "icon": "table-cell",
+            "internal": true,
+            "widgetList": [],
+            "merged": false,
+            "options": {
+              "name": "table-cell-104671",
+              "cellWidth": "",
+              "cellHeight": "",
+              "colspan": 1,
+              "rowspan": 1,
+              "wordBreak": false,
+              "customClass": ""
+            },
+            "id": "table-cell-104671"
+          }
+        ],
+        "id": "table-row-88586",
+        "merged": false
+      },
+      {
+        "cols": [
+          {
+            "type": "table-cell",
+            "category": "container",
+            "icon": "table-cell",
+            "internal": true,
+            "widgetList": [],
+            "merged": false,
+            "options": {
+              "name": "table-cell-80586",
+              "cellWidth": "",
+              "cellHeight": "",
+              "colspan": 1,
+              "rowspan": 1,
+              "wordBreak": false,
+              "customClass": ""
+            },
+            "id": "table-cell-80586"
+          },
+          {
+            "type": "table-cell",
+            "category": "container",
+            "icon": "table-cell",
+            "internal": true,
+            "widgetList": [],
+            "merged": false,
+            "options": {
+              "name": "table-cell-107911",
+              "cellWidth": "",
+              "cellHeight": "",
+              "colspan": 1,
+              "rowspan": 1,
+              "wordBreak": false,
+              "customClass": ""
+            },
+            "id": "table-cell-107911"
+          }
+        ],
+        "id": "table-row-27955",
+        "merged": false
+      }
+    ],
+    "options": {
+      "name": "table44652",
+      "hidden": false,
+      "customClass": ""
+    },
+    "id": "table44652"
+  },
+  tabContainer: {
+    "key": 73834,
+    "type": "tab",
+    "category": "container",
+    "icon": "tab",
+    "displayType": "border-card",
+    "tabs": [
+      {
+        "type": "tab-pane",
+        "category": "container",
+        "icon": "tab-pane",
+        "internal": true,
+        "widgetList": [],
+        "options": {
+          "name": "tab1",
+          "label": "tab 1",
+          "hidden": false,
+          "active": false,
+          "disabled": false,
+          "customClass": ""
+        },
+        "id": "tab-pane-90360"
+      }
+    ],
+    "options": {
+      "name": "tab104623",
+      "hidden": false,
+      "customClass": ""
+    },
+    "id": "tab104623"
+  },
+  cardContainer: {
+    "key": 94805,
+    "type": "card",
+    "category": "container",
+    "icon": "card",
+    "widgetList": [],
+    "options": {
+      "name": "card91353",
+      "label": "card",
+      "hidden": false,
+      "folded": false,
+      "showFold": true,
+      "cardWidth": "100%",
+      "shadow": "never",
+      "customClass": ""
+    },
+    "id": "card91353"
   }
 }
+
+/** 定义vue-markdown编辑器标准占位符枚举 */
+export const standardPlaceholdersEnum = {
+  FIELDS: '-{{}}',//字段名
+  VALUES: '(())',
+  TITLE: '### ',//标题
+  DIAGNOSIS: '[[]]',//诊断
+}
+/** 定义vue-markdown编辑器标准占位符对应的正则表达式 */
+export const standardPlaceholdersRegex = {
+  FIELDS: /-\{\{([^}]+)\}\}/g,
+  VALUES: /\(\(([^)]+)\)\)/g,
+  TITLE: /^### (.*)$/gm,
+  DIAGNOSIS: /\[\[([^\]]+)\]\]/g,
+};
+/** 增强版医疗占位符规范（支持动态交互） */
+export const MedicalPlaceholders = {
+  // 基础结构
+  SECTION: '##@',       // 区块标题（如"##@诊断信息"）
+  FIELD: '{{$}}',       // 字段占位（如"{{$姓名}}：((张三))"）
+  VALUE: '(())',        // 值容器（需与FIELD配对）
+
+  // 动态逻辑
+  DIAGNOSIS: '[[ICD@]]',    // 诊断占位（自动关联ICD-10）
+  CHECK_ITEM: '[[检查@]]',  // 检查项占位（根据诊断推荐）
+  MEDICATION: '[[用药@]]',  // 药物占位（关联药品库）
+
+  // 逻辑关系
+  CONDITION: '{{if}}',  // 条件分支（如根据字段值显示不同内容）
+};
+// 匹配增强版占位符（支持嵌套和上下文）
+export const MedicalPlaceholdersRegex = {
+  SECTION: /^##@\s+(.*?)\s*##@/gm,                     // 匹配区块
+  FIELD: /\{\{\$(\w+)\}\}:?\s*\(\(([^)]*)\)\)/g,       // 提取字段名和值
+  DIAGNOSIS: /\[\[ICD@(?::(\w+))?\]\]/g,               // 提取诊断类型（如[[ICD@主诊断]]）
+  CHECK_ITEM: /\[\[检查@([^\]]+)\]\]/g,                // 提取检查项上下文
+  CONDITION: /\{\{if\s+([^}]+)\}\}([\s\S]*?)\{\{endif\}\}/g, // 条件逻辑
+};
+
+// deepseek API Keys
+export const qdd_ds_key_nest = 'sk-d69be47fceaf4d6b995a813d6d5e6eda'

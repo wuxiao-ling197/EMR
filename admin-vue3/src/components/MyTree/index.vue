@@ -35,12 +35,13 @@
           <slot name="rightContent" @check-content="handleContentCheck"></slot>
           <div
             class="field-check-box"
-            v-for="fields in fieldList"
-            :key="fields"
+            v-for="(fields,index) in fieldList"
+            :key="index"
           >
             <MyCheckBox
               :fieldsName="fields.name"
               :fields="fields.children"
+              @update-checked-fields="handleCheckedFieldsUpdate(fields.name, $event)"
             ></MyCheckBox>
           </div>
         </el-scrollbar>
@@ -52,6 +53,11 @@
 import { number } from "echarts";
 import { onBeforeUnmount, onMounted, reactive } from "vue";
 import MyCheckBox from "@/components/MyCheckBox/index";
+import useFieldsStore from "@/store/modules/feildsStore";
+import { getFieldsByStanderdCodeApi } from "@/api/medicalRecord/formCreate"
+
+const fieldsStore = useFieldsStore();
+
 const props = defineProps({
   data: {
     type: Object,
@@ -72,14 +78,6 @@ const props = defineProps({
     type: String,
     default: "My Tree",
   },
-  //   leftHeight: {
-  //     type: Number,
-  //     default: 300,
-  //   },
-  //   rightHeight: {
-  //     type: Number,
-  //     default: 300,
-  //   },
   height: {
     type: Number,
     default: 300,
@@ -107,21 +105,78 @@ const filterNode = (value, data) => {
   return data.label.includes(value);
 };
 // 点击节点事件
-function nodeClickEvt(target) {
+async function nodeClickEvt(target) {
   console.log(target);
-  if (target.level === 2 && target.children.length > 0) {
+  if (target.code != "TP33" && target.type === "标准编码类别") {
     console.log(target.children);
-    // fieldList.push({
-    //   fieldName: target.name,
-    //   fields: target.children,
-    // });
-    // 校验，如果重复就不再推入
-    if (fieldList.some((fields) => fields.code === target.code)) {
-      return;
+    if(target.children.length === 0){
+      // 发送请求，获取fields
+      let res = await getFields({categoryCode:target.code})
+      if(res.code===200){
+        target.children = res.data.list
+        fieldList.push(target);
+      }
     }
-    fieldList.push(target);
+    else if(target.children.length > 0){
+      // fieldList.push({
+      //   fieldName: target.name,
+      //   fields: target.children,
+      // });
+      // 校验，如果重复就不再推入
+      if (fieldList.some((fields) => fields.code === target.code)) {
+        return;
+      }
+      fieldList.push(target);
+    }
+  }
+  else if(target.parent==="TP33" && target.type==="编码类型"){
+    if(target.children.length === 0){
+      // 发起请求
+      let res = await getFields({code:target.code})
+      if(res.code===200){
+        target.children = res.data.list
+        fieldList.push(target);
+      }
+    }
+    else if(target.children.length > 0){
+      // 校验，如果重复就不再推入
+      if (fieldList.some((fields) => fields.code === target.code)) {
+        return;
+      }
+      fieldList.push(target);
+    }
+  }
+  else if(target.parent==="entities" && target.type==="实体"){
+    if(target.children.length > 0){
+      // 校验，如果重复就不再推入
+      if (fieldList.some((fields) => fields.code === target.code)) {
+        return;
+      }
+      fieldList.push(target);
+    }
   }
 }
+const getFields = (opt)=>{
+  console.log('getFields-------');
+  return getFieldsByStanderdCodeApi(opt)
+}
+// 处理 MyCheckBox 组件选中字段更新
+const allCheckedFields = reactive(new Map());
+const handleCheckedFieldsUpdate = (index, newCheckedFields) => {
+  console.log('=======emit========');
+  
+  console.log(index);
+  console.log(newCheckedFields);
+  
+  // 更新对应类型的选中字段
+  allCheckedFields.set(index, newCheckedFields)
+  // 合并所有选中字段
+  const mergedCheckedFields = [];  allCheckedFields.forEach((fields) => {
+    mergedCheckedFields.push(...fields);
+  });
+  // 写入 store
+  fieldsStore.setSelectedFields(mergedCheckedFields);
+};
 </script>
 <style lang="scss" scoped>
 .select-template-box {

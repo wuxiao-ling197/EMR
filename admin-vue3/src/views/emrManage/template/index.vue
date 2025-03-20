@@ -3,10 +3,13 @@
         <el-row :gutter="20">
             <el-col :span="16">
                 <el-button type="primery" @click="handleTemplate(1)">编辑模板</el-button>
-                <el-button type="primary" @click="handleTemplate(2)">新增form模板</el-button>
-                <el-button type="primary" @click="handleTemplate(4)">新增markdown模板</el-button>
+                <el-button type="primary" @click="handleTemplate(2)">新增模板</el-button>
                 <el-button type="primery" @click="handleTemplate(3)">查看模板</el-button>
                 <el-button type="primery" @click="handleTemplate(5)">配置模板</el-button>
+                <el-input 
+                type="text"
+                v-model="inputValue"></el-input>
+                <el-button type="primery" @click="useDSAPI(inputValue)">调用dsAPI测试</el-button>
             </el-col>
             <el-col :span="8">
                 <el-button @click="handleStop(1)" type="text">启用模板</el-button>
@@ -38,6 +41,10 @@
                 <el-table-column 
                 property="name" 
                 label="模板名称" 
+                width="180" />
+                <el-table-column 
+                property="meta" 
+                label="模板版本" 
                 width="180" />
                 <el-table-column
                 property="category"
@@ -120,7 +127,7 @@
     import useUserStore from '@/store/modules/user';
     import { createTemplateApi, getEMRModulesListApi } from '@/api/medicalRecord/emrApi';
     import useMedicalRecordStore from '@/store/modules/medicalRecord';
-
+    import { testDSAPI } from '@/api/medicalRecord/AIApi'
     // 引入自定义组件
     import ConfigForm from './baseTemplates/templateConfig.vue';
     import MyDialog from '@/components/MyDialog'
@@ -186,6 +193,7 @@
             name: '住院志',
             remark: '病人在住院期间的详细病情记录，包括入院时的症状、体征、诊断等。',
             category: '模板类型',
+            meta: '1.0',
             active: true,
             createName: 'admin',
             writeDate: '2016-05-04',
@@ -304,7 +312,7 @@
         permission: 'string',
         number: '001',
         active: '1',
-        meta: '1',
+        meta: '1.0',
         payload: null,
         remark: ''
     })
@@ -347,7 +355,7 @@
         medicalRecordStore.setTemplateConfig(templateObj.value)
         // 点击确认后跳转
         router.push({
-            path: "/emrManage/template/basicInfo",
+            path: `/emrManage/template/${type==2?'basicInfo':'dynamicTemplateConfig'}`,
             // query: { id:'add',tempType: type==2?'1':'2'}
             query: { id:'add',tempType: type}
         });
@@ -373,7 +381,6 @@
                 });
                 break;
             case 2:
-            case 4:
                 // 跳转页面之前，先弹出配置框，填写表单数据
                 await showConfigEvt()
                 // 这边配置完成，点击确认后才跳转下一页
@@ -405,33 +412,29 @@
                 break;
         }
     }
+
+    const inputValue = ref('')
+    const useDSAPI = async (question)=>{
+        try{
+            let res = await testDSAPI(question)
+            console.log(res);
+            if(res.code===200){
+                ElMessage({
+                    type: 'success',
+                    message: res.data.content
+                });
+            }
+        }catch(err){
+            console.error(err);
+        }
+    }
+
     const handleClick = ()=>{
         alert('edit')
     };
     const deleteRow = (index) => {
         templateList.value.splice(index, 1)
     };
-
-    const onAddItem = async () => {
-        now.setDate(now.getDate() + 1)
-        const id = templateList.value.length + 1
-        const newTemplate = {
-            // id: 'template_id_xxx',
-            id,
-            writeDate: dayjs(now).format('YYYY-MM-DD'),
-            name: 'Brandon Deckert',
-            remark: 'please input blank this template descript...',
-            active: true,
-            address: 'Arnold-Ohletz-Str. 41a, Alt Malinascheid, Thüringen',
-            business: 'Home',
-        }
-        // 发送请求，存入数据库
-        const res = await createTemplateApi(newTemplate);
-        if(res.code===200){
-            templateList.value.push(newTemplate)
-        }
-        
-    }
 
      // 获取模板列表数据，根据模板大类处理成树形数据
      const getEMRModulesTree = async()=>{

@@ -10,7 +10,7 @@ import { TemplateEntity } from './entities/emr_template.entity';
 @Module({
   imports: [
     // TypeOrmModule.forFeature([TemplateEntity, SysDeptEntity, SysRoleEntity, SysPostEntity, SysTemplateWithPostEntity, SysTemplateWithRoleEntity]),
-    TypeOrmModule.forFeature([TemplateEntity,], 'odoo18-2'),
+    TypeOrmModule.forFeature([TemplateEntity,], 'odoo18'),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({

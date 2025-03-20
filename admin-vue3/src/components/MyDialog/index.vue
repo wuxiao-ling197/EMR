@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import { defineProps, ref } from "vue";
+import { ref } from "vue";
 
 export default {
   name: "MyDialog",
@@ -160,7 +160,7 @@ export default {
     // 监听插槽内容的变化
     const checkSlotContent = () => {
       // 这是一个简单的方法来检查是否有内容传入插槽
-      // 在真实场景中，你可能需要更复杂的逻辑来判断内容的有效性
+      // 判断内容的有效性
       const slotContent = slots.content && slots.content()[0];
       hasContentSlot.value =
         slotContent && slotContent.type && slotContent.type !== "text";
@@ -197,6 +197,7 @@ export default {
     function cancelEvt() {
       // 点击取消，关闭弹窗前逻辑
       console.log("cancel----");
+
       if (props.click_cancel) {
         console.log(props.click_cancel);
         props.click_cancel();

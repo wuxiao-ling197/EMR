@@ -17,7 +17,7 @@ import { AuthTotpEntity } from './entities/auth_totp';
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ResUserEntity, HrEmpEntity, HrDeptEntity, CompUserEntity, ResCompEntity, ResoureceEntity, AuthTotpEntity], 'odoo18-2'),
+    TypeOrmModule.forFeature([ResUserEntity, HrEmpEntity, HrDeptEntity, CompUserEntity, ResCompEntity, ResoureceEntity, AuthTotpEntity], 'odoo18'),
     TypeOrmModule.forFeature([SysUserWithRoleEntity, SysRoleEntity]),
     JwtModule.registerAsync({
       imports: [ConfigModule],

@@ -40,6 +40,8 @@ import { RegisCheckModule } from './module/emrManage/registerAndCheckIn/regis_ch
 
 import { PatientEntity } from './module/emrManage/registerAndCheckIn/entities/patient.entity';
 import { DynamicOptionsModule } from './module/emrManage/dynamicOptions/dynamicOptions.module';
+import { DeepseekModule } from './module/emrManage/deepseekAPI/deepseek.module'
+import { PrescriptionModule } from './module/emrManage/prescription/pre.module';
 
 @Global()
 @Module({
@@ -66,39 +68,21 @@ import { DynamicOptionsModule } from './module/emrManage/dynamicOptions/dynamicO
         } as TypeOrmModuleOptions;
       },
     }),
-    //共享数据库odoo
-    TypeOrmModule.forRootAsync({
-      name: 'shared',
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          type: 'postgres',
-          entities: [`${__dirname}/module/share/**/*.entity{.ts,.js}`],
-          autoLoadEntities: true,
-          keepConnectionAlive: true,
-          timezone: '+08:00',
-          synchronize: true,
-          logging: true,
-          ...config.get('db.shared'),
-        } as TypeOrmModuleOptions;
-      },
-    }),
     //共享数据库odoo18
     TypeOrmModule.forRootAsync({
-      name: 'odoo18-2',
+      name: 'odoo18',
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
           type: 'postgres',
-          entities: [`${__dirname}/module/odoo18-2/**/*.entity{.ts,.js}`],
+          entities: [`${__dirname}/module/odoo18/**/*.entity{.ts,.js}`],
           autoLoadEntities: true,
           keepConnectionAlive: true,
           timezone: '+08:00',
           synchronize: true,
           logging: true,
-          ...config.get('db.odoo18-2'),
+          ...config.get('db.odoo18'),
         } as TypeOrmModuleOptions;
       },
     }),
@@ -145,7 +129,9 @@ import { DynamicOptionsModule } from './module/emrManage/dynamicOptions/dynamicO
     PatientModule,
     TemplateModule,
     RegisCheckModule,
-    DynamicOptionsModule
+    DynamicOptionsModule,
+    DeepseekModule,
+    PrescriptionModule
   ],
   providers: [
     // JwtAuthGuard,

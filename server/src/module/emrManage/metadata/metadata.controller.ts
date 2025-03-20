@@ -28,7 +28,7 @@ export class MetadataController {
   @Get('hospitalPatientMetadata')
   getPatientField(@Query('entityName') entityName: string) {
     console.log('========getPatientEntityField========');
-    return this.MetadataService.getPatientEntityField(entityName);
+    return this.MetadataService.getPatientEntityField({ entityComment: entityName });
   }
 
   @ApiOperation({

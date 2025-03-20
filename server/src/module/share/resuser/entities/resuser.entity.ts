@@ -59,8 +59,8 @@ export class ResUserEntity extends SharedEntity {
   @Column({ type: 'int', name: 'sale_team_id', default: null, comment: 'User Sales Team' })
   public saleTeamId: number;
 
-  @Column({ type: 'int', name: 'website_id', default: null, comment: 'Website' })
-  public websiteId: number;
+  // @Column({ type: 'int', name: 'website_id', default: null, comment: 'Website' })
+  // public websiteId: number;
 
   // emlpoyee 外键res_user.user_id,最终查询结构为resuser.employee
   @OneToOne(() => HrEmpEntity, (employee) => employee.user)

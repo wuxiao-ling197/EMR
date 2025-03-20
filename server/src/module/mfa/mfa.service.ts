@@ -13,12 +13,12 @@ export class MfaService {
   ALGORITHM = 'HmacSHA1'; // HMAC SHA1
   DIGITS = 6; // 生成的验证码的位数
   constructor(
-    @InjectRepository(ResUserEntity, 'shared')
+    @InjectRepository(ResUserEntity, 'odoo18')
     private readonly userRepo: Repository<ResUserEntity>,
-    @InjectRepository(AuthTotpEntity, 'shared')
+    @InjectRepository(AuthTotpEntity, 'odoo18')
     public readonly totpEntityRep: Repository<AuthTotpEntity>,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   /**
    * 激活totp认证 生成totp secret
@@ -27,7 +27,15 @@ export class MfaService {
    * @returns
    */
   async createTotpcode(userId: number, user: any) {
-    const data = await this.userRepo.createQueryBuilder('user').where('user.id = :id', { id: userId }).select(['user.id', 'user.nestSecret', 'user.login']).getOne();
+    console.log('----createTotp---------');
+
+    let data;
+    try {
+      data = await this.userRepo.createQueryBuilder('user').where('user.id = :id', { id: userId }).select(['user.id', 'user.nestSecret', 'user.login']).getOne();
+    } catch (err) {
+      console.log(err);
+
+    }
     let activateTotp = false;
     // 显式设置算法
     authenticator.options = { crypto: require('crypto'), HashAlgorithms: this.ALGORITHM, windows: 0 };
@@ -54,37 +62,54 @@ export class MfaService {
    * @returns
    */
   async validateTotp(user: any) {
+    console.log(user);
+
     const data = await this.userRepo.findOne({
       where: { login: user.username },
     });
-    const cuUser = await this.totpEntityRep.createQueryBuilder('totp').where({ userId: data.id }).select(['totp.id', 'totp.secret']).getMany();
+    let cuUser;
+    try {
+      cuUser = await this.totpEntityRep.createQueryBuilder('totp').where({ userId: data.id }).select(['totp.id', 'totp.secret']).getMany();
+      console.log(cuUser);
+    } catch (err) {
+      console.error(err);
+    }
     const totps = cuUser
       .filter((user) => user.secret && user.secret !== '' && user.secret !== 'false') // 过滤出 value 不为空的记录
       .map((user) => user.id);
     console.log('查totp激活记录：', totps);
     if (totps.length == 0) {
-      // 生成并显示二维码
-      const otpUrl = authenticator.keyuri(user.username, 'Nest', data.nestSecret);
-      // 生成4个模块数的二维码
-      const qrCodeDataURL = await QRCode.toDataURL(otpUrl, {
-        width: 212,
-        margin: 1,
-      }); // 将 URI 转为 Base64 数据 URL 但是太长了 odoo不到一千 nest有快三千字符了 不过没影响
-      const verify = authenticator.check(user.code, data.nestSecret);
-      if (verify) {
-        const authtotp = new AuthTotpEntity();
-        authtotp.userId = data.id;
-        authtotp.secret = data.nestSecret; //安全起见只在用户表存
-        authtotp.code = user.code;
-        authtotp.url = otpUrl;
-        authtotp.qrcode = qrCodeDataURL;
-        authtotp.createUid = data.id;
-        authtotp.createDate = new Date();
-        authtotp.writeUid = data.id;
-        authtotp.writeDate = new Date();
-        await this.totpEntityRep.save({ ...authtotp }); // 使用 save 方法插入数据
+      console.log('show qrCodeImg======================');
+      try {
+        // 生成并显示二维码
+        const otpUrl = authenticator.keyuri(user.username, 'Nest', data.nestSecret);
+        // 生成4个模块数的二维码
+        const qrCodeDataURL = await QRCode.toDataURL(otpUrl, {
+          width: 212,
+          margin: 1,
+        }); // 将 URI 转为 Base64 数据 URL 但是太长了 odoo不到一千 nest有快三千字符了 不过没影响
+        console.log(user.code);
+        console.log(typeof user.code);
+
+        const verify = authenticator.check(user.code, data.nestSecret);
+        if (verify) {
+          const authtotp = new AuthTotpEntity();
+          authtotp.userId = data.id;
+          authtotp.secret = data.nestSecret; //安全起见只在用户表存
+          authtotp.code = user.code;
+          authtotp.url = otpUrl;
+          authtotp.qrcode = qrCodeDataURL;
+          authtotp.createUid = data.id;
+          authtotp.createDate = new Date();
+          authtotp.writeUid = data.id;
+          authtotp.writeDate = new Date();
+          await this.totpEntityRep.save({ ...authtotp }); // 使用 save 方法插入数据
+        }
+        return ResultData.ok({ verify, otpUrl, qrCodeDataURL }, '激活并验证成功');
+      } catch (err) {
+        console.log(err);
+        return ResultData.fail(500, '认证失败')
       }
-      return ResultData.ok({ verify, otpUrl, qrCodeDataURL }, '激活并验证成功');
     }
     // 如果不是第一次激活，直接验证
     if (totps.length > 0) {

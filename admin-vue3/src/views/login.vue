@@ -179,6 +179,10 @@ function handleLogin() {
 }
 
 function validCode(value) {
+  console.log('validate==value::');
+  console.log(value);
+  
+  
   validateTotp(value).then((response) => {
     qrCodeBase64.value = response.data.qrCodeDataURL;
     authCodeInfo.qrCode = response.data.qrCodeDataURL;

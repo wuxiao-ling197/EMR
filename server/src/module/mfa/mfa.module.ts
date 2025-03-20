@@ -8,10 +8,10 @@ import { MfaController } from './mfa.controller';
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ResUserEntity, AuthTotpEntity], 'shared'), // Ensure the entity is registered here
+    TypeOrmModule.forFeature([ResUserEntity, AuthTotpEntity], 'odoo18'), // Ensure the entity is registered here
   ],
   providers: [MfaService],
   controllers: [MfaController],
   exports: [MfaService],
 })
-export class MfaModule {}
+export class MfaModule { }

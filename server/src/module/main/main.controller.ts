@@ -25,13 +25,13 @@ import { MfaService } from '../mfa/mfa.service';
 @Controller('/')
 export class MainController {
   constructor(
-    @InjectRepository(HrEmpEntity, 'shared')
+    @InjectRepository(HrEmpEntity, 'odoo18')
     private readonly employeeEntityRep: Repository<HrEmpEntity>,
-    @InjectRepository(ResUserEntity, 'shared')
+    @InjectRepository(ResUserEntity, 'odoo18')
     private readonly userRepo: Repository<ResUserEntity>,
-    @InjectRepository(HrDeptEntity, 'shared')
+    @InjectRepository(HrDeptEntity, 'odoo18')
     private readonly deptEntityRep: Repository<HrDeptEntity>,
-    @InjectRepository(CompUserEntity, 'shared')
+    @InjectRepository(CompUserEntity, 'odoo18')
     private readonly userWithcompanyEntityRep: Repository<CompUserEntity>,
 
     private readonly mainService: MainService,

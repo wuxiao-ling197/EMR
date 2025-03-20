@@ -7,6 +7,7 @@ import { Type } from 'class-transformer';
 export enum FeildTypeEnum {
     LIBRARY = '字段库',
     CATEGORY = '标准编码类别',
+    CODE = '编码类型',
     ENTITY = '实体',
     FIELD = '字段'
 }
@@ -15,14 +16,14 @@ export class TreeNode {
     level: number;
     code: string;
     name: string;
-
     @IsEnum(FeildTypeEnum)
     type?: FeildTypeEnum;
-
     children?: Array<TreeNode>;
-
     parent?: string;
     label: string
+    // 实体字段可以直接拿到要求类型和是否必填
+    nullable?: boolean;
+    fieldType?: string;
 }
 
 // 定义枚举
@@ -64,6 +65,9 @@ export class WidgetJsonDto {
 
     @IsArray()
     optionItems: any[];
+
+    @IsArray()
+    options?: Object;
 }
 /**
  * DTO 用于定义数据的结构，用于请求和响应的验证.
@@ -97,3 +101,27 @@ export class SelectDoctorDto {
     bookTime?: Date//预约时间
 
 }
+
+export class GenerateTemplateFieldsDto {
+    @IsOptional()
+    @IsString()
+    categoryCode?: string
+
+    @IsOptional()
+    @IsArray()
+    fieldList?: Array<any>
+
+    @IsOptional()
+    @IsString()
+    entityName?: string
+
+    @IsOptional()
+    @IsArray()
+    entityColumns?: Array<any>
+}
+
+// 实体字段元数据
+export class entityFields {
+    fieldName: string;
+    fieldLabel: string
+};

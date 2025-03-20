@@ -38,6 +38,10 @@ export class MainService {
     loginLog.loginLocation = loginLocation;
     try {
       const loginRes = await this.userService.login(user, loginLog);
+      console.log('============logres');
+      console.log(loginRes);
+
+
       loginLog.status = loginRes.code === SUCCESS_CODE ? '0' : '1';
       loginLog.msg = loginRes.msg;
       this.loginlogService.create(loginLog);

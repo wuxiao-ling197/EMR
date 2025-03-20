@@ -2,20 +2,18 @@ import { Module, Global } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DynamicOptionsService } from './dynamicOptions.service';
-import { DynamicOptionsController } from './dynamicOptions.controller';
+import { DeepseekService } from './deepseek.service';
+import { DeepseekController } from './deepseek.controller';
 
 // 引入部门，职员，元数据实体
 import { HrDeptEntity } from 'src/module/share/hrdept/entities/hrdept.entity';
-import { HrEmpEntity } from 'src/module/share/resuser/entities/hremp.entity';
-import { MetadataEntity } from 'src/module/emrManage/metadata/entities/emr-metadata.entity';
 
 
 @Global()
 @Module({
     imports: [
         // TypeOrmModule.forFeature([DynamicOptionsEntity, SysDeptEntity, SysRoleEntity, SysPostEntity, SysDynamicOptionsWithPostEntity, SysDynamicOptionsWithRoleEntity]),
-        TypeOrmModule.forFeature([HrDeptEntity, HrEmpEntity, MetadataEntity], 'odoo18'),
+        TypeOrmModule.forFeature([HrDeptEntity], 'odoo18'),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: async (config: ConfigService) => ({
@@ -24,8 +22,8 @@ import { MetadataEntity } from 'src/module/emrManage/metadata/entities/emr-metad
             inject: [ConfigService],
         }),
     ],
-    controllers: [DynamicOptionsController],
-    providers: [DynamicOptionsService],
-    exports: [DynamicOptionsService],
+    controllers: [DeepseekController],
+    providers: [DeepseekService],
+    exports: [DeepseekService],
 })
-export class DynamicOptionsModule { }
+export class DeepseekModule { }

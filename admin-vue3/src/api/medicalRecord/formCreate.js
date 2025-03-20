@@ -70,11 +70,11 @@ export function getDynamicOptionsApi(query) {
  * @param {*} query 
  * @returns 
  */
-export function generateTemplateApi(query) {
+export function generateTemplateApi(data) {
   return request({
     url: `/emrManage/dynamicOptions/generateTemplate`,
-    method: 'get',
-    params: query
+    method: 'post',
+    data: data
   })
 }
 
@@ -83,12 +83,26 @@ export function generateTemplateApi(query) {
  * @param {*} query 
  * @returns 
  */
-export function getTemplateFeildsApi(query) {
+export function getTemplateFeildsApi(data) {
   return request({
     url: `/emrManage/dynamicOptions/getTemplateFeildList`,
-    method: 'get',
-    params: query
+    method: 'post',
+    data: data
   })
 }
+
+/**
+ * 根据code编码获取可选模板配置字段
+ * @param {*} query 
+ * @returns 
+ */
+export function getFieldsByStanderdCodeApi(data) {
+  return request({
+    url: `/emrManage/dynamicOptions/getFieldsByStanderdCode`,
+    method: 'post',
+    data: data
+  })
+}
+
 
 

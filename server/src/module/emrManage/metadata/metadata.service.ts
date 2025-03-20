@@ -30,7 +30,7 @@ export class MetadataService {
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource,
-    @InjectRepository(MetadataEntity, 'odoo18-2')
+    @InjectRepository(MetadataEntity, 'odoo18')
     private readonly MetadataRepo: Repository<MetadataEntity>,
   ) { }
   /**
@@ -69,10 +69,13 @@ export class MetadataService {
    * 获取单个实体的元数据
    * 实际上应该是根据传递的name参数来获取某个实体的元数据
    */
-  async getPatientEntityField(entityComment: string) {
+  async getPatientEntityField(data: { entityComment?: string, columnComments?: Array<any>, }) {
+    { }
     const metadatas = this.dataSource.entityMetadatas;
     const fieldList: DatasourceFeildDto[] = [];
+    let { entityComment, columnComments } = data
     console.log('entityComment:::', entityComment);
+    // 根据实体名字生成fields
     if (entityComment) {
       // 如果有comment参数，就遍历所有实体，找到表名或者comment对得上的实体，获取元数据
       metadatas.forEach((metadata, index) => {
@@ -86,6 +89,8 @@ export class MetadataService {
         }
       })
       return fieldList;
+    } else if (columnComments) {
+
     } else {
       // 没有comment参数，可能根据其他字段判断实体
       console.error('缺少参数');
@@ -167,15 +172,26 @@ export class MetadataService {
    * @param query
    * @returns
    */
-  async findValueListByCode(code: string) {
+  async findValueListByCode(codes: string | Array<string>) {
+    let valueList = []
     try {
-      const valueList = await this.MetadataRepo.find({
-        where: {
-          code: code,
-          // delFlag: '0',
-        },
-        select: ['value', 'valueMean'],
-      });
+      if (typeof codes === 'string') {
+        valueList = await this.MetadataRepo.find({
+          where: {
+            code: codes,
+            // delFlag: '0',
+          },
+          select: ['value', 'valueMean'],
+        });
+      } else if (Array.isArray(codes)) {
+        valueList = await this.MetadataRepo.find({
+          where: {
+            code: In(codes),
+            // delFlag: '0',
+          },
+          select: ['value', 'valueMean'],
+        });
+      }
       let list = valueList.map(item => (
         {
           value: item.value,
@@ -254,6 +270,36 @@ export class MetadataService {
       return ResultData.fail(500, err)
     }
 
+  }
+
+
+  async findValueListByCodeWithPagination(codes: string[] | string, offset: number, limit: number) {
+    console.log('根据codes查询ICD10------------');
+    console.log(codes);
+    const queryBuilder = this.MetadataRepo.createQueryBuilder('metadata');
+    if (typeof codes === 'string') {
+      // 根据传入的 code 列表进行筛选
+      queryBuilder.where('metadata.code = :codes', { codes });
+    }
+    else if (Array.isArray(codes)) {
+      // 检查 codes 数组是否为空
+      if (codes.length === 0) {
+        return ResultData.ok([]);
+      }
+      // 根据传入的 code 列表进行筛选
+      queryBuilder.where('metadata.code IN (:...codes)', { codes });
+    }
+    // 进行分页
+    queryBuilder.skip(offset).take(limit);
+    // 选择需要的字段
+    queryBuilder.select(['metadata.code', 'metadata.value', 'metadata.valueMean']);
+    try {
+      const data = await queryBuilder.getMany();
+      return ResultData.ok(data);
+    } catch (error) {
+      console.error('Error in findValueListByCodeWithPagination:', error);
+      return ResultData.fail(500, 'Failed to fetch value list');
+    }
   }
   /**
    * 停用元数据

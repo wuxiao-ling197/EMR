@@ -2,8 +2,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/entities/base';
-@Entity('hospital_patient_jobid', {
-    comment: '病人就诊表',
+@Entity('hospital_patient_prescription_line', {
+    comment: '处方记录表',
 })
 /**
  * 数据处理逻辑 1.定义实体和列属性
@@ -19,34 +19,37 @@ export class PrescriptionEntity {
     @Column({ type: 'int', name: 'write_uid', comment: 'Last Updated by' })
     public writeUid: number;
 
-    @Column({ type: 'int', name: 'register_id', nullable: false, comment: '就诊信息' })
-    public registerID: number;
+    @Column({ type: 'int', name: 'patient_record_id', comment: '处方' })
+    public patientRecordId: number;
 
-    @Column({ type: 'int', name: 'patient_id', nullable: false, comment: '病人信息' })
-    public patientID: number;
+    @Column({ type: 'int', name: 'medicine_id', comment: '药品' })
+    public medicineId: number;
 
-    @Column({ type: 'varchar', name: 'jobId', comment: '就诊号' })
-    public jobId: string;
+    @Column({ type: 'int', name: 'quantity', comment: '数量' })
+    public quantity: number;
 
-    @Column({ type: 'int', name: 'business_type_id', nullable: false, comment: '业务类型' })
-    public businessTypeId: number;
+    @Column({ type: 'varchar', name: 'take_frequency', nullable: false, comment: '使用时间' })
+    public takeFrequency: string;
 
-    @Column({ type: 'bool', name: 'if_in_queue', nullable: false, comment: '是否在队列' })
-    public ifInQueue: boolean;
+    @Column({ type: 'date', name: 'validity_expire_date', comment: '过期日期' })
+    public validityExpireDate: Date;
 
-    @Column({ type: 'int', name: 'department_id', nullable: false, comment: '挂号科室' })
-    public departmantID: number;
+    @Column({ type: 'text', name: 'note', comment: '备注' })
+    public note: string;
 
-    @Column({ type: 'int', name: 'doctor_id', nullable: false, comment: '挂号医生' })
-    public doctorID: number;
+    @Column({ type: 'float8', name: 'num_intakes', nullable: false, comment: '单次使用量' })
+    public numIntakes: number;
 
-    @Column({ type: 'bool', name: 'active', nullable: false, comment: '是否有效' })
-    public active: boolean;
+    @Column({ type: 'float8', name: 'price', comment: '单价' })
+    public price: number;
+
+    @Column({ type: 'float8', name: 'total_price', comment: '总价' })
+    public totalPrice: number;
 
     @Column({ type: 'timestamp', name: 'create_date', comment: 'Created on' })
     public createDate: Date;
 
-    @Column({ type: 'varchar', name: 'write_date', comment: 'Last Updated on' })
+    @Column({ type: 'timestamp', name: 'write_date', comment: 'Last Updated on' })
     public writeDate: Date;
 
 }

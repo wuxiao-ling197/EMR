@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { SharedEntity } from 'src/common/entities/shared';
 import { HrEmpEntity } from '../../resuser/entities/hremp.entity';
 
-// @Entity({ database: 'shared' }) // 指定数据库的连接名称
+// @Entity({ database: 'odoo18' }) // 指定数据库的连接名称
 @Entity('hr_department', {
   comment: 'Department',
 })

@@ -94,8 +94,8 @@ export class PatientEntity {
   @Column({ type: 'varchar', name: 'citizen_health_archive_code', comment: '居民健康档案编号' })
   public citizenHealthArchiveCode?: string;
 
-  @Column({ type: 'varchar', name: 'identity_type', default: 1, comment: '证件类型' })
-  public identityType?: string;
+  @Column({ type: 'int', name: 'id_type', default: 1, comment: '证件类型' })
+  public idType?: number;
 
   @Column({ type: 'varchar', name: 'identifyid', nullable: false, comment: '身份证号码' })
   public identifyid?: string;
@@ -154,11 +154,11 @@ export class PatientEntity {
   @Column({ type: 'bool', name: 'die', comment: '死亡' })
   public die?: boolean;
 
-  @Column({ type: 'bool', name: 'inpatient_flag', nullable: false, comment: '患者是否就诊' })
-  public inpatient_flag: boolean;
+  // @Column({ type: 'bool', name: 'inpatient_flag', nullable: false, comment: '患者是否就诊' })
+  // public inpatient_flag: boolean;
 
-  @Column({ type: 'timestamp', name: 'bornyear', comment: '出生日期' })
-  public bornyear?: Date;
+  @Column({ type: 'timestamp', name: 'date_of_birth', comment: '出生日期' })
+  public dateOfBirth?: Date;
 
   @Column({ type: 'timestamp', name: 'create_date', comment: 'Created on' })
   public createDate?: Date;

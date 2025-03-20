@@ -144,7 +144,7 @@
     async function getPatientInfoMudule(){
         // 根据id或者name获取
         const res2 = await selectTemplateApi({name:'档案基础信息表3'})
-        if(res2.code===200){
+        if(res2.code===200 ){
             console.log(res2.data);
             formJson.value = res2.data.payload.template
             vfRenderRef.value.setFormJson(formJson.value)

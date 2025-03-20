@@ -42,17 +42,17 @@ import { ResoureceEntity } from './entities/resource.entity';
 export class ResUserService {
   private pwdContext: CryptoContext;
   constructor(
-    @InjectRepository(ResUserEntity, 'odoo18-2')
+    @InjectRepository(ResUserEntity, 'odoo18')
     private readonly userRepo: Repository<ResUserEntity>,
-    @InjectRepository(HrDeptEntity, 'odoo18-2')
+    @InjectRepository(HrDeptEntity, 'odoo18')
     private readonly deptEntityRep: Repository<HrDeptEntity>,
-    @InjectRepository(HrEmpEntity, 'odoo18-2')
+    @InjectRepository(HrEmpEntity, 'odoo18')
     private readonly employeeEntityRep: Repository<HrEmpEntity>,
-    @InjectRepository(ResCompEntity, 'odoo18-2')
+    @InjectRepository(ResCompEntity, 'odoo18')
     private readonly companyEntityRep: Repository<ResCompEntity>,
-    @InjectRepository(CompUserEntity, 'odoo18-2')
+    @InjectRepository(CompUserEntity, 'odoo18')
     private readonly userWithcompanyEntityRep: Repository<CompUserEntity>,
-    @InjectRepository(ResoureceEntity, 'odoo18-2')
+    @InjectRepository(ResoureceEntity, 'odoo18')
     private readonly resourceRep: Repository<ResoureceEntity>,
     @InjectRepository(SysUserWithRoleEntity)
     private readonly sysUserWithRoleEntityRep: Repository<SysUserWithRoleEntity>,

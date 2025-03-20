@@ -12,7 +12,7 @@ export class LoginlogService {
   constructor(
     @InjectRepository(MonitorLoginlogEntity)
     private readonly monitorLoginlogEntityRep: Repository<MonitorLoginlogEntity>,
-  ) {}
+  ) { }
 
   /**
    * 创建用户登录日志

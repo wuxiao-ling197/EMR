@@ -11,7 +11,7 @@ import { PatientEntity } from '../registerAndCheckIn/entities/patient.entity';
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PatientJobIDEntity, PatientQueueEntity, PatientEntity], 'odoo18-2'),
+    TypeOrmModule.forFeature([PatientJobIDEntity, PatientQueueEntity, PatientEntity], 'odoo18'),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({

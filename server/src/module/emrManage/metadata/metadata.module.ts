@@ -9,7 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([MetadataEntity], 'odoo18-2'),
+    TypeOrmModule.forFeature([MetadataEntity], 'odoo18'),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({

@@ -10,4 +10,4 @@ import { MonitorLoginlogEntity } from './entities/loginlog.entity';
   providers: [LoginlogService],
   exports: [LoginlogService],
 })
-export class LoginlogModule {}
+export class LoginlogModule { }

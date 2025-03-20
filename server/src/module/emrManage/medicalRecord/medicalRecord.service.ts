@@ -19,7 +19,7 @@ import { HrDeptService } from 'src/module/share/hrdept/hrdept.service';
 @Injectable()
 export class MedicalRecordService {
   constructor(
-    @InjectRepository(MedicalRecordEntity, 'odoo18-2')
+    @InjectRepository(MedicalRecordEntity, 'odoo18')
     private readonly MedicalRecordRepo: Repository<MedicalRecordEntity>,
     private readonly deptService: HrDeptService,
     private readonly jwtService: JwtService,

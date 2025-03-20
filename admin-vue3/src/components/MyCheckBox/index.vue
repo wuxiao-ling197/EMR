@@ -23,9 +23,12 @@
   </div>
 </template>
   <script setup>
-import { onBeforeMount, onMounted, reactive, onBeforeUnmount } from "vue";
+import { onBeforeMount, onMounted, reactive, onBeforeUnmount, defineEmits } from "vue";
 import useFieldsStore from "@/store/modules/feildsStore";
 let fieldsStore = useFieldsStore();
+
+const emit = defineEmits(["update-checked-fields"]);
+
 const props = defineProps({
   fieldsName: {
     type: String,
@@ -60,22 +63,28 @@ const handleCheckAllChange = (val) => {
   checkedFields.value = val ? fields : [];
   isIndeterminate.value = false;
   console.log(checkedFields.value);
-
-  fieldsStore.setSelectedFields(checkedFields.value);
+  emit("update-checked-fields", checkedFields.value);
+  // fieldsStore.setSelectedFields(checkedFields.value);
 };
 // 复选框列表中选择发生变化
 const handleCheckedCitiesChange = (value) => {
   const checkedCount = value.length;
   //   全选和单选框变化都需要重新写入checkedFields
   // 但是最理想的情况是在弹窗的确认事件里拿到checkedFields
-  fieldsStore.setSelectedFields(checkedFields.value);
+  // fieldsStore.setSelectedFields(checkedFields.value);
+  console.log(checkedFields.value);
+  emit("update-checked-fields", checkedFields.value);
   checkAll.value = checkedCount === fields.length;
   isIndeterminate.value = checkedCount > 0 && checkedCount < fields.length;
 };
 
-onBeforeUnmount(() => {
-  console.log("--------------beforeUnmount-----------------");
-  console.log(checkedFields);
+// 暴露获取选中字段的方法
+const getCheckedFields = () => {
+  return checkedFields.value;
+};
+
+defineExpose({
+  getCheckedFields,
 });
 </script>
 <style lang="scss" scoped>

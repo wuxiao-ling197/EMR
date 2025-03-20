@@ -13,8 +13,16 @@ export enum StatusEnum {
  */
 
 // 创建处方
-export class CreatePrescriptionDto {
+export class PrescriptionDto {
     // 需要身份证号
+    @ApiProperty({ required: true })
+    @IsString()
+    patientID: string;
+
+    // 会传进来jobId（或者来这边查？）
+    @ApiProperty({ required: true })
+    @IsString()
+    jobId: string;
     // 姓名
     // 性别
     // public no: string;

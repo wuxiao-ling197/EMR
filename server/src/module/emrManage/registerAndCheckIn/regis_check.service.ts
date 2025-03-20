@@ -24,11 +24,11 @@ import { CreateMedicalRecordDto } from '../medicalRecord/dto';
 @Injectable()
 export class RegisCheckService {
     constructor(
-        @InjectRepository(PatientEntity, 'odoo18-2')
+        @InjectRepository(PatientEntity, 'odoo18')
         private readonly PatientRepo: Repository<PatientEntity>,
-        @InjectRepository(PatientQueueEntity, 'odoo18-2')
+        @InjectRepository(PatientQueueEntity, 'odoo18')
         private readonly PatientQueueRepo: Repository<PatientQueueEntity>,
-        @InjectRepository(HospitalPatientRecordEntity, 'odoo18-2')
+        @InjectRepository(HospitalPatientRecordEntity, 'odoo18')
         private readonly HospitalPatientRecordRepo: Repository<HospitalPatientRecordEntity>,
 
         private readonly deptService: HrDeptService,

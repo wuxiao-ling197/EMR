@@ -17,11 +17,11 @@ import { UpdateQueueStataDto } from './dto';
 @Injectable()
 export class PatientService {
   constructor(
-    @InjectRepository(PatientJobIDEntity, 'odoo18-2')
+    @InjectRepository(PatientJobIDEntity, 'odoo18')
     private readonly PatientJobIDRepo: Repository<PatientJobIDEntity>,
-    @InjectRepository(PatientQueueEntity, 'odoo18-2')
+    @InjectRepository(PatientQueueEntity, 'odoo18')
     private readonly PatientQueueRepo: Repository<PatientQueueEntity>,
-    @InjectRepository(PatientEntity, 'odoo18-2')
+    @InjectRepository(PatientEntity, 'odoo18')
     private readonly PatientRepo: Repository<PatientEntity>,
     private readonly deptService: HrDeptService,
     private readonly jwtService: JwtService,

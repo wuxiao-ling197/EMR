@@ -28,9 +28,13 @@ cos:
 # 数据库配置
 db:
   postgres:
-    host: '192.168.0.30'
-    username: 'nest'
-    password: 'nest'
+    # host: '192.168.0.30'
+    # username: 'nest'
+    # password: 'nest'
+    # database: 'nest'
+    host: '192.168.0.40'
+    username: 'odoo'
+    password: 'odoo'
     database: 'nest'
     port: 5432
     ssldisable: false
@@ -42,32 +46,12 @@ db:
     synchronize: false
     supportBigNumbers: true
     bigNumberStrings: true
-
-  odoo18-2:
-    # host: '192.168.0.40'
-    # database: 'odoo18'
-    host: '192.168.0.2'
+    
+  odoo18:
+    host: '192.168.0.40'
+    database: 'Odoo18'
     username: 'odoo'
     password: 'odoo'
-    database: 'odoo18_share2'
-    port: 5432
-    ssldisable: false
-    # charset: 'utf8mb4'
-    logger: 'file'
-    logging: true
-    multipleStatements: true
-    dropSchema: false
-    synchronize: false
-    supportBigNumbers: true
-    bigNumberStrings: true
-
-  shared:
-    host: '192.168.0.2'
-    # username: 'odoo17'
-    # password: 'odoo17'
-    username: 'odoo'
-    password: 'odoo'
-    database: 'odoo18_share1'
     port: 5432
     ssldisable: false
     # charset: 'utf8mb4'
@@ -107,7 +91,7 @@ perm:
         { path: '/perm/{id}', method: 'GET' },
         { path: '/upload', method: 'POST' },
         # { path: '/emrManage/dynamicOptions/deptOptionlist', method: 'GET'},
-        { path: '/emrManage/dynamicOptions/getTemplateFeildList', method: 'GET'}
+        { path: '/emrManage/deepseek/testDSAPI', method: 'POST'}
       ]
 
 # 用户相关

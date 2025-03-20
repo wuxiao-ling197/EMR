@@ -31,13 +31,13 @@
                 </el-col>
             </el-row>
             <el-form-item label="模板编号">
-                <el-input v-model="localFormConf.number" type="textarea" />
+                <el-input disabled v-model="localFormConf.number" type="textarea" />
             </el-form-item>
             <el-form-item label="是否可用">
-                <el-input v-model="localFormConf.active" type="textarea" />
+                <el-input disabled v-model="localFormConf.active" type="textarea" />
             </el-form-item>
             <el-form-item label="版本">
-                <el-input v-model="localFormConf.meta" type="textarea" />
+                <el-input disabled v-model="localFormConf.meta" type="textarea" />
             </el-form-item>
             <el-form-item label="备注">
                 <el-input v-model="localFormConf.remark" type="textarea" />

@@ -16,11 +16,11 @@ import { authenticator } from 'otplib';
 @Controller('auth')
 export class MfaController {
   constructor(
-    @InjectRepository(ResUserEntity, 'shared')
+    @InjectRepository(ResUserEntity, 'odoo18')
     private readonly userRepo: Repository<ResUserEntity>,
     private readonly resuserService: ResUserService,
     private readonly mafService: MfaService,
-  ) {}
+  ) { }
 
   // 只有在完全登录系统后，才会保存当前登录信息到requst中
   @ApiOperation({
